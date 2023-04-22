@@ -2,11 +2,15 @@
 #include <DHT.h>
 
 //Constants
+const int CONTROL_HUM = 5;    // GPIO14 for humidifier
+const int LED_ERROR_HUM = 3;   // GPIO12 for error LED of humidity
+const int MIN_RH = 83;
 
-#define CONTROL_HUM 5    // GPIO14 for humidifier
-#define LED_ERROR_HUM 3    // GPIO12 for error LED of humidity
+//Variables
+float RH;   // Relative Humidity (%)
+
+
 #define DHTPIN 2            // GPIO2 for DHT21
-
 #define DHTTYPE DHT21       //DHT 21  (AM2301)
 DHT dht(DHTPIN, DHTTYPE);   //Initialize DHT sensor for normal 16mhz Arduino
 
@@ -17,7 +21,7 @@ void ControlHumidity(float RH){
       digitalWrite(LED_ERROR_HUM, HIGH);
       digitalWrite(CONTROL_HUM, LOW);
     }
-   else if(RH < 83){ // humidity reading too low
+   else if(RH < MIN_RH){ // humidity reading too low
       digitalWrite(LED_ERROR_HUM, LOW);
       digitalWrite(CONTROL_HUM, LOW);
    }
@@ -28,8 +32,6 @@ void ControlHumidity(float RH){
   
   }
 
-//Variables
-float RH;   // Relative Humidity (%)
 
 void setup() {
   pinMode(LED_ERROR_HUM, OUTPUT);
