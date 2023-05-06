@@ -2,12 +2,13 @@
 #include <DHT.h>
 
 //Constants
-const int CONTROL_HUM = 5;    // GPIO14 for humidifier
+const int CONTROL_HUM = 14;    // GPIO14 for humidifier
 const int LED_ERROR_HUM = 3;   // GPIO12 for error LED of humidity
-const int MIN_RH = 83;
+const int MIN_RH = 90;
 
 //Variables
-float RH;   // Relative Humidity (%)
+float RH;     // Relative Humidity (%)
+float TEMP;   // Temperature (C)
 
 
 #define DHTPIN 2            // GPIO2 for DHT21
@@ -43,11 +44,15 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   
+  TEMP = dht.readTemperature();
+  Serial.print("Temperature (Celsius): ");
+  Serial.println(TEMP);
+  
   RH = dht.readHumidity();
-  ControlHumidity(RH);
-
   Serial.print("Humidity: ");
   Serial.println(RH);
-  delay(2000);
-
+  
+  ControlHumidity(RH);
+  
+  delay(3000);
 }
